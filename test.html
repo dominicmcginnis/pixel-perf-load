@@ -1,32 +1,16 @@
 <html>
 <head>
+<script type="text/javascript" src="/pixel-perf-load/pixelUtil.js"></script>
 
-<script type='text/javascript'>
-    var xmlHTTP = new XMLHttpRequest();
-    var url = 'http://localhost:8888/testpixel.png?foo=bar&baz=faz';
-    xmlHTTP.open('GET', url, true);
-    xmlHTTP.responseType = 'arraybuffer';
-    xmlHTTP.timeout = 1000;
-    xmlHTTP.ontimeout = function () { 
-        var logbackURL = 'http://localhost:8888/logtimeout/';
-        var logback = new XMLHttpRequest();
-        logback.timeout = 1000;
-        logback.open('GET', logbackURL + '?timedoutUrl="'+encodeURIComponent(url)+'"', true);
-        logback.send(); 
-    }
-    xmlHTTP.onload = function (e) {
-        var arr = new Uint8Array(this.response);
-        var raw = String.fromCharCode.apply(null, arr);
-        var b64 = btoa(raw);
-        var dataURL = "data:image/jpeg;base64," + b64;
-        serverImage1x4.src = dataURL;
-    };
-    xmlHTTP.send();
-
-</script>
 </head>
 <body>
 <p>Testing elevation pixel</p>
+<script type='text/javascript'>
+    var pixelUrl = 'http://localhost:8888/testpixel.png?foo=bar&baz=faz';
+    var pixelLogTimoutUrl = 'http://localhost:8888/logtimeout/';
+
+    PixelUtil.loadPixel(pixelUrl, PixelUtil.pixelTimeoutLogger(pixelUrl, pixelLogTimoutUrl));
+</script>
 </body>
 </html>
 
